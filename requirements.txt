@@ -1,0 +1,6 @@
+lxml
+yfinance
+alpaca-py
+alpaca
+pytz
+dotenv
