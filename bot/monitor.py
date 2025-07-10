@@ -13,6 +13,13 @@ BASE_URL = os.getenv("APCA_API_BASE_URL", "https://paper-api.alpaca.markets")
 client = TradingClient(API_KEY, API_SECRET, paper=True)
 
 def check_heartbeat():
+    '''
+ Checks the freshness of the heartbeat file to ensure the trading bot is still running.
+ Input: None (reads from 'heartbeat.txt')
+ Output: 
+   - True if the heartbeat is recent (within 5 minutes)
+   - False if the file is missing, stale, or improperly formatted
+    '''
     if not os.path.exists(HEARTBEAT_FILE):
         print("[ALERT] No heartbeat file found!")
         return False
@@ -32,6 +39,11 @@ def check_heartbeat():
     return True
 
 def check_account_status():
+    '''
+ Retrieves and prints current account status including cash, equity, buying power, and number of open positions.
+ Input: None
+ Output: Printed account summary to console
+    '''
     account = client.get_account()
     positions = client.get_all_positions()
     print(
@@ -40,6 +52,11 @@ def check_account_status():
     )
 
 def check_open_orders():
+    '''
+ Checks for any open orders in the Alpaca account and prints their details.
+ Input: None
+ Output: Printed list of open orders or confirmation that none exist
+    '''
     all_orders = client.get_orders()
     open_orders = [order for order in all_orders if order.status == OrderStatus.OPEN]
     if open_orders:
@@ -53,6 +70,11 @@ def check_open_orders():
         print("[OK] No open orders.")
 
 def main_loop():
+    '''
+ Continuously monitors the trading bot by checking heartbeat, account status, and open orders every 60 seconds.
+ Input: None
+ Output: Periodic console output with monitoring information and alerts
+    '''
     while True:
         print(f"\n--- Monitoring check at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---")
         heartbeat_ok = check_heartbeat()
