@@ -3,15 +3,14 @@ import pandas as pd
 
 def get_intraday_data(symbol: str, interval: str = "15m", period: str = "5d") -> pd.DataFrame:
     '''
-    Gets intraday data from yfinance.
-    symbol: ticker symbol for stock
-    interval: bar interval (e.g., "1m", "5m", "15m", etc.)
-    period: data range (e.g., "1d", "5d", etc.)
-
-    Returns:
-        pd.DataFrame containing OHLCV data with timestamps as index
+ Fetches intraday OHLCV data for a given stock symbol using yfinance.
+ Input:
+   - symbol (str): Ticker symbol of the stock
+   - interval (str): Time interval between data points (e.g., "1m", "5m", "15m")
+   - period (str): Time span of data to retrieve (e.g., "1d", "5d")
+ Output:
+   - pd.DataFrame: DataFrame containing OHLCV data with timestamps as index
     '''
-
     df = yf.download(
         tickers=symbol,
         interval=interval,
@@ -35,6 +34,15 @@ def get_intraday_data(symbol: str, interval: str = "15m", period: str = "5d") ->
     return df
 
 def get_5min_data(symbol: str, days_back: int = 5) -> pd.DataFrame:
+    '''
+ Retrieves 5-minute interval intraday data for the past N weekdays, filtered to regular market hours.
+ Input:
+   - symbol (str): Ticker symbol of the stock
+   - days_back (int): Number of past days to retrieve (default is 5)
+ Output:
+   - pd.DataFrame: Cleaned DataFrame with 5-minute OHLCV data during market hours (09:30–15:30)
+    '''
+
     df = yf.download(
         tickers=symbol,
         period=f"{days_back}d",
@@ -56,9 +64,3 @@ def get_5min_data(symbol: str, days_back: int = 5) -> pd.DataFrame:
     df.index.name = "timestamp"
 
     return df
-
-'''
-if __name__ == "__main__":
-    spy_df = get_intraday_data("SPY", interval="15m", period="5d")
-    print(spy_df.head())
-'''
