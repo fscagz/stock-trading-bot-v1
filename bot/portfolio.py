@@ -7,6 +7,15 @@ import pandas as pd
 import numpy as np
 
 def analyze_trades(df: pd.DataFrame, verbose: bool = False) -> dict:
+    '''
+ Analyzes trade signals and computes portfolio performance metrics.
+ Simulates trades based on signal column and calculates statistics like PnL, win rate, Sharpe ratio, and drawdown.
+ Input:
+   - df (pd.DataFrame): DataFrame with at least 'signal', 'close', 'trade_pnl', and 'cumulative_pnl' columns
+   - verbose (bool): If True, prints each trade's details during processing
+ Output:
+   - dict: Summary statistics including total PnL, number of trades, win rate, average PnL, Sharpe ratio, drawdown, etc.
+    '''
     trades = []
     entry_price = None
     entry_time = None
