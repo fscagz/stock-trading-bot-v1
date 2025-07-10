@@ -7,6 +7,16 @@ Assumes trade is entered on the same bar as signal is generated (at close)
 import pandas as pd
 
 def backtest_signals(df: pd.DataFrame):
+    '''
+  Backtests trading signals by simulating long and short trades based on the 'signal' column.
+  Input:
+    - df (pd.DataFrame): DataFrame with a datetime index and at least two columns:
+        'signal' (1 for long entry, -1 for short entry, 0 for exit)
+        'close' (price at which trades are entered/exited)
+  Output:
+    - df (pd.DataFrame): Modified DataFrame with 'trade_pnl' and 'cumulative_pnl' columns
+    - trades (list of dicts): List of executed trades with entry/exit details and PnL
+    '''
     df = df.copy()
     df["trade_pnl"] = 0.0
     df["cumulative_pnl"] = 0.0
