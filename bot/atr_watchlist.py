@@ -4,14 +4,25 @@ import yfinance as yf
 import pandas as pd
 import time
 
-# Get list of S&P 500 tickers
 def get_sp500_tickers():
+ '''
+ Fetches the list of S&P 500 ticker symbols from Wikipedia.
+ Input: None
+ Output: List of ticker strings formatted for Yahoo Finance (e.g., 'BRK-B' instead of 'BRK.B')
+'''
     table = pd.read_html("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
     tickers = table[0]["Symbol"].tolist()
     return [ticker.replace(".", "-") for ticker in tickers]  # BRK.B → BRK-B
 
-# Compute 14-period ATR for a given ticker
-def compute_atr(ticker, period=14):
+def compute_atr(ticker, period=14): 
+ '''
+ Calculates the 14-day Average True Range (ATR) for a given stock ticker using historical daily data.
+ Input: 
+   - ticker (str): Stock ticker symbol
+   - period (int): Number of periods to use for ATR calculation (default is 14)
+ Output: 
+   - float: The computed ATR value, or None if data is insufficient or an error occurs
+'''
     try:
         df = yf.download(ticker, period="3mo", interval="1d", progress=False)
         if df.empty or len(df) < period + 1:
@@ -26,8 +37,15 @@ def compute_atr(ticker, period=14):
         print(f"Error fetching {ticker}: {e}")
         return None
 
-# Main: batch process all tickers
 def get_top_atr_stocks(top_n, batch_size=50):
+ '''
+Processes all S&P 500 tickers in batches, computes their ATRs, and returns the top N stocks with the highest ATR values.
+Input:
+  - top_n (int): Number of top stocks to return based on ATR
+  - batch_size (int): Number of tickers to process per batch (default is 50)
+Output:
+  - List of tuples: Each tuple contains (ticker, ATR), sorted by ATR in descending order
+ '''
     tickers = get_sp500_tickers()
     all_results = []
 
