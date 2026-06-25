@@ -1,3 +1,7 @@
+# Note
+
+This repo is no longer being used. Please see v4.1 instead: https://github.com/fscagz/stock-trading-bot-v4.1
+
 # Python Stock Trading Bot
 
 A Python-based stock trading bot that integrates with the **Alpaca API** for live trading and uses **Yahoo Finance** for historical data. This modular system supports backtesting, live monitoring, and technical indicator-based signal generation. It works by calculating a stock's volume-weighted average price (VWAP) and trading when a significant deviation is detected.
